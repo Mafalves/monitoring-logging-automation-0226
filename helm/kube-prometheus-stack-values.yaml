@@ -1,0 +1,27 @@
+grafana:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    hosts:
+      - grafana.localhost
+    path: /
+
+  admin:
+    existingSecret: grafana-secret
+    userKey: admin-user
+    passwordKey: admin-password
+
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+      - job_name: 'flask-app'
+        static_configs:
+          - targets: ['flask-app-service.default.svc.cluster.local:80']
+        metrics_path: /metrics
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    hosts:
+      - prometheus.localhost
+    paths:
+      - /

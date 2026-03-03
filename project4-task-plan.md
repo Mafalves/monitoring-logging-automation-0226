@@ -10,24 +10,24 @@ This document breaks Project 4 into concrete, time-bound tasks. Assume roughly *
 
 **Goal:** Know exactly what you’re monitoring, where logs go, and which tools you’ll use.
 
-### Task 1: Clarify the Monitoring Scope (≈ 0.5 day)
+### Task 1: Clarify the Monitoring Scope (≈ 0.5 day) - done
 - List all targets to monitor:
   - **Kubernetes** (Project 3): Flask app pods, cluster health, HPA behavior.
   - **AWS** (Project 1): EC2 instances, RDS, optional S3.
 - Decide which components are in-scope vs out-of-scope for this project.
-- Write a short `ARCHITECTURE.md` or `monitoring-design-notes.md` describing:
+- Write a short `ARCHITECTURE.md` describing:
   - What you will monitor and why.
   - How this builds on Projects 1–3.
   - High-level data flow: sources → collectors → storage → dashboards/alerts.
 
-### Task 2: Log Collection Strategy (≈ 0.5 day)
+### Task 2: Log Collection Strategy (≈ 0.5 day) - done
 - Choose one approach:
   - **Option A – CloudWatch Logs:** Simpler; integrates with AWS. Use CloudWatch Logs agent on EC2; for K8s, use Fluent Bit/Fluentd to ship container logs to CloudWatch.
   - **Option B – ELK stack:** More flexible querying; self-hosted. Elasticsearch + Logstash/Fluentd + Kibana.
 - Document the decision and rationale (cost, complexity, portfolio value).
 - **Recommendation for portfolio:** CloudWatch for AWS-native simplicity; add Loki + Grafana for K8s logs if you want a unified Grafana experience.
 
-### Task 3: Metrics Stack Decision (≈ 0.5 day)
+### Task 3: Metrics Stack Decision (≈ 0.5 day) - done
 - **Prometheus + Grafana** (Roadmap requirement):
   - Prometheus scrapes metrics from K8s (kube-state-metrics, metrics-server, app `/metrics` if exposed).
   - Grafana visualizes Prometheus data and optionally CloudWatch.
@@ -36,9 +36,9 @@ This document breaks Project 4 into concrete, time-bound tasks. Assume roughly *
   - **Standalone:** If you prefer separation.
 - Capture this in `monitoring-design-notes.md`.
 
-### Task 4: Environment Check and Prerequisites (≈ 0.5 day)
+### Task 4: Environment Check and Prerequisites (≈ 0.5 day) - done
 - Confirm Project 3’s k3d cluster is available (or recreate it).
-- Confirm Project 1’s AWS infrastructure (EC2, RDS) is reachable.
+- Confirm Project 1’s AWS infrastructure (EC2, RDS) is reachable. (Optional until task)
 - Install any local tools needed (e.g., `promtool`, `amtool` for Prometheus/Alertmanager).
 - Document how to start/stop the cluster and access AWS resources.
 
@@ -48,7 +48,7 @@ This document breaks Project 4 into concrete, time-bound tasks. Assume roughly *
 
 **Goal:** Prometheus scraping metrics; Grafana displaying dashboards.
 
-### Task 5: Deploy Prometheus on Kubernetes (≈ 1 day)
+### Task 5: Deploy Prometheus on Kubernetes (≈ 1 day) - done
 - Deploy Prometheus in the k3d cluster (Project 3’s cluster).
 - Options:
   - **kube-prometheus-stack (Helm):** Full stack (Prometheus, Grafana, Alertmanager, node-exporter, kube-state-metrics). Recommended for completeness.
@@ -56,10 +56,9 @@ This document breaks Project 4 into concrete, time-bound tasks. Assume roughly *
 - Configure `prometheus.yml` to scrape:
   - Kubernetes API (pods, nodes, services).
   - kube-state-metrics (if not using full stack).
-  - Flask app (if you add a `/metrics` endpoint; optional for later).
 - Verify: Prometheus UI shows targets as UP.
 
-### Task 6: Deploy Grafana (≈ 0.5 day)
+### Task 6: Deploy Grafana (≈ 0.5 day) - done
 - Deploy Grafana (in-cluster or as part of kube-prometheus-stack).
 - Expose Grafana via Ingress or port-forward.
 - Set up Prometheus as a data source in Grafana.
